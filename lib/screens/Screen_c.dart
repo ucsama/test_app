@@ -6,7 +6,6 @@ import '../utils/hashtag_utils.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/hashtag_editing_controller.dart';
 
-
 class ScreenC extends StatefulWidget {
   const ScreenC({super.key});
 
@@ -53,7 +52,7 @@ class _ScreenCState extends State<ScreenC> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Create Your Content'),
+      appBar: const CustomAppBar(title: 'Screen C'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(

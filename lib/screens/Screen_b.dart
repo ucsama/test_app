@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../navigation/app_router.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/hashtag_text.dart';
+
 
 class ScreenB extends StatelessWidget {
   final String? phrase;
@@ -15,7 +17,7 @@ class ScreenB extends StatelessWidget {
     final bool hasData = (phrase != null && phrase!.isNotEmpty) || (hashtags != null && hashtags!.isNotEmpty);
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Submitted Content'),
+      appBar: const CustomAppBar(title: 'Screen B'),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
