@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
+
 import '../screens/Screen_a.dart';
 import '../screens/Screen_b.dart';
 import '../screens/Screen_c.dart';
+
 
 class AppRouter {
   static const String screenA = '/';
@@ -12,7 +14,11 @@ class AppRouter {
     routes: [
       GoRoute(
         path: screenA,
-        builder: (context, state) => const ScreenA(),
+        builder: (context, state) {
+          final bool showDialog =
+              (state.extra as Map<String, bool>?)?['showDialog'] ?? false;
+          return ScreenA(showDialog: showDialog);
+        },
       ),
       GoRoute(
         path: screenB,

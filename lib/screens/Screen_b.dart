@@ -5,7 +5,6 @@ import '../navigation/app_router.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/hashtag_text.dart';
 
-
 class ScreenB extends StatelessWidget {
   final String? phrase;
   final String? hashtags;
@@ -36,11 +35,11 @@ class ScreenB extends StatelessWidget {
                     children: [
                       const Text('Your Phrase:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white70)),
                       const SizedBox(height: 10),
-                      HashtagText(text: phrase ?? "No phrase provided.", style: const TextStyle(fontSize: 16, color: Colors.white)),
+                      HashtagText(text: phrase ?? "", style: const TextStyle(fontSize: 16, color: Colors.white)),
                       const SizedBox(height: 24),
                       const Text('Your Hashtags:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white70)),
                       const SizedBox(height: 10),
-                      HashtagText(text: hashtags ?? "No hashtags provided.", style: const TextStyle(fontSize: 16, color: Colors.white)),
+                      HashtagText(text: hashtags ?? "", style: const TextStyle(fontSize: 16, color: Colors.white)),
                     ],
                   ),
                 ),
@@ -54,24 +53,17 @@ class ScreenB extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () => context.go(AppRouter.screenC),
-              child: const Text('Go to Screen C'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                context.go(AppRouter.screenA);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Congratulations 🎉', style: TextStyle(color: Colors.white)),
-                    backgroundColor: Colors.green[600],
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green[700]),
-              child: const Text('Done'),
-            ),
+            if (hasData)
+              ElevatedButton(
+                onPressed: () => context.go(AppRouter.screenA, extra: {'showDialog': true}),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green[700]),
+                child: const Text('Done'),
+              )
+            else
+              ElevatedButton(
+                onPressed: () => context.go(AppRouter.screenC),
+                child: const Text('Go to Screen C'),
+              ),
           ],
         ),
       ),
