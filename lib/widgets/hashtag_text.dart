@@ -1,46 +1,40 @@
-
 import 'package:flutter/material.dart';
 
-
-import '../utils/hashtag_utils.dart';
-
-/// A widget that displays text with hashtags highlighted.
 class HashtagText extends StatelessWidget {
   final String text;
+  final TextStyle? style;
 
-  const HashtagText({super.key, required this.text});
+  const HashtagText({super.key, required this.text, this.style});
 
   @override
   Widget build(BuildContext context) {
+    final hashtagStyle = Theme.of(context).colorScheme.secondary;
+    final defaultStyle = style ?? DefaultTextStyle.of(context).style;
+
+    final List<TextSpan> children = [];
+    final RegExp hashtagRegExp = RegExp(r'(#\w+)');
+
+    text.splitMapJoin(
+      hashtagRegExp,
+      onMatch: (Match match) {
+        children.add(TextSpan(
+          text: match.group(0),
+          style: defaultStyle.copyWith(color: hashtagStyle, fontWeight: FontWeight.w600),
+        ));
+        return '';
+      },
+      onNonMatch: (String text) {
+        children.add(TextSpan(text: text, style: defaultStyle));
+        return '';
+      },
+    );
+
     return RichText(
+      textAlign: TextAlign.center,
       text: TextSpan(
-        style: DefaultTextStyle.of(context).style,
-        children: _buildTextSpans(context),
+        style: defaultStyle,
+        children: children,
       ),
     );
-  }
-
-  /// Builds a list of [TextSpan]s with hashtags styled.
-  List<TextSpan> _buildTextSpans(BuildContext context) {
-    final List<TextSpan> children = [];
-    final matches = HashtagUtils.hashtagRegExp.allMatches(text);
-
-    int start = 0;
-    for (final Match match in matches) {
-      if (match.start > start) {
-        children.add(TextSpan(text: text.substring(start, match.start)));
-      }
-      children.add(
-        TextSpan(
-          text: match.group(0),
-          style: HashtagUtils.hashtagStyle,
-        ),
-      );
-      start = match.end;
-    }
-    if (start < text.length) {
-      children.add(TextSpan(text: text.substring(start)));
-    }
-    return children;
   }
 }

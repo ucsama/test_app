@@ -1,10 +1,8 @@
-
 import 'package:go_router/go_router.dart';
 import '../screens/Screen_a.dart';
 import '../screens/Screen_b.dart';
 import '../screens/Screen_c.dart';
 
-/// Defines the routes for the application.
 class AppRouter {
   static const String screenA = '/';
   static const String screenB = '/b';

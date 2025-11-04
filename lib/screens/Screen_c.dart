@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../navigation/app_router.dart';
 import '../utils/hashtag_utils.dart';
+import '../widgets/custom_app_bar.dart';
 import '../widgets/hashtag_editing_controller.dart';
+
 
 class ScreenC extends StatefulWidget {
   const ScreenC({super.key});
@@ -14,15 +15,23 @@ class ScreenC extends StatefulWidget {
 }
 
 class _ScreenCState extends State<ScreenC> {
-  // Use the custom controller for the phrase field.
   late final HashtagEditingController _phraseController;
   final TextEditingController _hashtagsController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _phraseController = HashtagEditingController()
-      ..addListener(_updateHashtags);
+    _phraseController = HashtagEditingController();
+    _phraseController.addListener(_updateHashtags);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _phraseController.hashtagStyle = TextStyle(
+      color: Theme.of(context).colorScheme.secondary,
+      fontWeight: FontWeight.w600,
+    );
   }
 
   @override
@@ -33,44 +42,45 @@ class _ScreenCState extends State<ScreenC> {
     super.dispose();
   }
 
-  /// Updates the hashtags field based on the content of the phrase field.
   void _updateHashtags() {
     final String text = _phraseController.text;
-    // Use the utility to extract hashtags.
     final String hashtags = HashtagUtils.extractHashtags(text);
-    _hashtagsController.value = _hashtagsController.value.copyWith(
-      text: hashtags,
-      selection: TextSelection.collapsed(offset: hashtags.length),
-    );
+    if (_hashtagsController.text != hashtags) {
+      _hashtagsController.text = hashtags;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Screen C'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: const CustomAppBar(title: 'Create Your Content'),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: _phraseController,
               decoration: const InputDecoration(
                 labelText: 'Phrase',
+                hintText: 'Type your phrase with #hashtags...',
+                prefixIcon: Icon(Icons.short_text),
               ),
+              maxLines: 5,
+              minLines: 3,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             TextField(
               controller: _hashtagsController,
               decoration: const InputDecoration(
                 labelText: 'Hashtags',
+                hintText: 'Hashtags will appear here',
+                prefixIcon: Icon(Icons.tag),
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                // Navigate using the named route and pass data as extra.
                 context.go(
                   AppRouter.screenB,
                   extra: {
@@ -79,7 +89,7 @@ class _ScreenCState extends State<ScreenC> {
                   },
                 );
               },
-              child: const Text('Submit'),
+              child: const Text('Submit Content'),
             ),
           ],
         ),
